@@ -94,7 +94,9 @@ class _PriToPubPageState extends State<PriToPubPage> {
                           )
                           : const SizedBox.shrink(),
                   onPressed:
-                      state.isLoading || state.privateKeyFromUser == null
+                      state.isLoading ||
+                              state.privateKeyFromUser == null ||
+                              state.privateKeyFromUser == ''
                           ? null
                           : () => state.priToPubKey(
                             context,
