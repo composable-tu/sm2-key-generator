@@ -4,7 +4,7 @@
 
 ## 使用须知
 
-该项目暂仅支持 Windows 10+ x64 端和 Linux Desktop x64 端运行，其中 Linux 端需要 GLib 版本 ≥ 2.80.0。
+该项目暂仅支持 Windows 10+ x64 端和 Linux Desktop x64 端运行，其中 Linux 端需要 [GLib](https://docs.gtk.org/glib/) 版本 ≥ 2.80.0。
 
 由于需要初始化原生库，首次生成密钥对的等候时间会稍长。
 
