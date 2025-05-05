@@ -1,0 +1,77 @@
+name: Build Flutter Windows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Windows
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ windows-2025, windows-11-arm ]
+        architecture: [ x64, arm64 ]
+        exclude:
+          - os: windows-2025
+            architecture: arm64
+          - os: windows-11-arm
+            architecture: x64
+          - os: windows-11-arm
+            architecture: arm64
+      fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.29.3'
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Install Cargo Expand
+        run: cargo install cargo-expand
+
+      - name: Setup Visual Studio
+        run: |
+          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Run Flutter Doctor
+        run: flutter doctor -v
+
+      - name: Install Flutter Rust Bridge Codegen
+        run: cargo install flutter_rust_bridge_codegen
+
+      - name: Generate Rust Bindings
+        run: flutter_rust_bridge_codegen generate
+
+      - name: Build Windows (Release)
+        run: flutter build windows --release
+
+      - name: Zip Artifacts
+        run: |
+          $sourceDir = "build\windows\${{ matrix.architecture }}\runner\Release"
+          $architecture = "${{ matrix.architecture }}"
+          $zipFile = "flutter_app_windows_$architecture.zip"
+          Compress-Archive -Path "$sourceDir\*" -DestinationPath $zipFile -Force
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-exe-${{ matrix.architecture }}
+          path: flutter_app_windows_${{ matrix.architecture }}.zip

@@ -1,0 +1,17 @@
+[package]
+name = "rust_lib_sm2_key_generator"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+flutter_rust_bridge = "=2.9.0"
+base64 = "0.22.1"
+rand = "0.9.1"
+libsm = "0.6.0"
+num-bigint = "0.4.6"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
