@@ -37,7 +37,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   easy_localization: ^3.0.7
-  url_launcher: ^6.3.1
+  url_launcher: ^6.3.2
   rust_lib_sm2_key_generator:
     path: rust_builder
   flutter_rust_bridge: ^2.10.0
