@@ -65,7 +65,7 @@ jobs:
           mv ../flutter_app_linux_${{ matrix.arch }}.tar.gz ./
 
       - name: Upload Linux Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: flutter-app-linux-${{ matrix.arch }}
           path: build/linux/${{ matrix.arch }}/release/bundle/flutter_app_linux_${{ matrix.arch }}.tar.gz
